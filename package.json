@@ -1,0 +1,40 @@
+{
+  "name": "vue-starter",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel-node ./webpack/build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maopy/vue-starter.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Maopy/vue-starter/issues"
+  },
+  "homepage": "https://github.com/Maopy/vue-starter#readme",
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "css-loader": "^0.25.0",
+    "ora": "^0.3.0",
+    "shelljs": "^0.7.4",
+    "vue": "^2.0.0-rc.4",
+    "vue-hot-reload-api": "^2.0.6",
+    "vue-html-loader": "^1.2.3",
+    "vue-loader": "^9.4.2",
+    "vue-style-loader": "^1.0.0",
+    "webpack": "^2.1.0-beta.21",
+    "webpack-merge": "^0.14.1"
+  },
+  "dependencies": {
+    "glob": "^7.0.6"
+  }
+}
