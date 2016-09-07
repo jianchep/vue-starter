@@ -1,5 +1,7 @@
+import path from 'path'
 import webpack from 'webpack'
 import merge from 'webpack-merge'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 import * as utils from './utils'
 import config from '../config'
@@ -29,6 +31,17 @@ export default merge(baseWebpackConfig, {
       output: {
         comments: false
       }
+    }),
+    new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, '../dist/views/index.html'),
+      template: 'src/template.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
+      chunksSortMode: 'dependency'
     })
   ]
 })

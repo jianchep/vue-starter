@@ -9,7 +9,7 @@ const projectRoot = path.resolve(__dirname, '../')
 
 let getEntry = (globPath) => {
   let entries = {
-    vendor: ['vue']
+    // vendor: ['vue']
   }
   glob.sync(globPath).forEach((entry) => {
     var pathname = entry.split('/').splice(-2).join('/').split('.')[0]
@@ -34,6 +34,9 @@ export default {
       'assets': path.resolve(__dirname, '../src/client/assets'),
       'components': path.resolve(__dirname, '../src/client/components')
     }
+  },
+  resolveLoader: {
+    fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
     loaders: [
@@ -60,7 +63,7 @@ export default {
         loader: 'url',
         query: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name]-[hash:8].[ext]')
         }
       },
       {
@@ -68,9 +71,12 @@ export default {
         loader: 'url',
         query: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath('fonts/[name]-[hash:8].[ext]')
         }
       }
     ]
+  },
+  vue: {
+    loaders: utils.cssLoaders()
   }
 }

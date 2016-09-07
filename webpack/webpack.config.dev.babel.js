@@ -1,5 +1,6 @@
 import webpack from 'webpack'
 import merge from 'webpack-merge'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 import config from '../config'
 import baseWebpackConfig from './webpack.config.base.babel'
@@ -15,6 +16,11 @@ export default merge(baseWebpackConfig, {
       'process.env': config.dev.env
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'src/template.html',
+      inject: true
+    })
   ]
 })
