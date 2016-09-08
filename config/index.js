@@ -14,6 +14,7 @@ export default {
     port: 4000,
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
+    viewsSubDirectory: 'views',
     assetsPublicPath: '/',
     productionSourceMap: true
   }

@@ -11,9 +11,13 @@ import webpackConfig from './webpack.config.prod.babel'
 const spinner = ora('building for production...')
 spinner.start()
 
-let assetsPath = path.join(config.prod.assetsRoot, config.prod.assetsSubDirectory)
+const assetsPath = path.join(config.prod.assetsRoot, config.prod.assetsSubDirectory)
+const viewsPath = path.join(config.prod.assetsRoot, config.prod.viewsSubDirectory)
+
 shell.rm('-rf', assetsPath)
+shell.rm('-rf', viewsPath)
 shell.mkdir('-p', assetsPath)
+shell.mkdir('-p', viewsPath)
 // shell.cp('-R', 'static/', assetsPath)
 
 webpack(webpackConfig, (err, stats) => {

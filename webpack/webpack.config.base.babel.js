@@ -12,7 +12,7 @@ let getEntry = (globPath) => {
     // vendor: ['vue']
   }
   glob.sync(globPath).forEach((entry) => {
-    var pathname = entry.split('/').splice(-2).join('/').split('.')[0]
+    var pathname = entry.split('/').splice(-1).join('/').split('.')[0]
     entries[pathname] = [entry]
   })
   return entries
