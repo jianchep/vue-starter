@@ -11,7 +11,7 @@ const env = process.env.NODE_ENV === 'testing'
   ? 'testing'
   : config.prod.env
 
-export default merge(baseWebpackConfig, {
+let prodConfig = merge(baseWebpackConfig, {
   devtool: config.prod.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.prod.assetsRoot,
@@ -31,17 +31,32 @@ export default merge(baseWebpackConfig, {
       output: {
         comments: false
       }
-    }),
-    new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, '../dist/views/index.html'),
-      template: 'src/template.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-      },
-      chunksSortMode: 'dependency'
     })
   ]
 })
+
+const chunks = Object.keys(prodConfig.entry)
+
+chunks.forEach((pathname) => {
+  if (pathname === 'vendor') {
+    return
+  }
+  let conf = {
+    filename: path.resolve(__dirname, `../dist/views/${pathname}.html`),
+    template: 'src/template.html',
+    inject: true,
+    minify: {
+      removeComments: true,
+      collapseWhitespace: true,
+      removeAttributeQuotes: true
+    },
+    chunksSortMode: 'dependency'
+  }
+  if (pathname in prodConfig.entry) {
+    conf.chunks = ['vendor', pathname]
+    conf.hash = false
+  }
+  prodConfig.plugins.push(new HtmlWebpackPlugin(conf))
+})
+
+export default prodConfig
