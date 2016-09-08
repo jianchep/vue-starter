@@ -1,5 +1,6 @@
 import path from 'path'
 import glob from 'glob'
+import webpack from 'webpack'
 
 import config from '../config'
 import * as utils from './utils'
@@ -9,7 +10,7 @@ const projectRoot = path.resolve(__dirname, '../')
 
 let getEntry = (globPath) => {
   let entries = {
-    // vendor: ['vue']
+    vendor: ['vue']
   }
   glob.sync(globPath).forEach((entry) => {
     var pathname = entry.split('/').splice(-1).join('/').split('.')[0]
@@ -76,6 +77,16 @@ export default {
       }
     ]
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      vue: 'vue'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'js/vendor.js',
+      minChunks: 3
+    })
+  ],
   vue: {
     loaders: utils.cssLoaders()
   }

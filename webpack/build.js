@@ -14,8 +14,7 @@ spinner.start()
 const assetsPath = path.join(config.prod.assetsRoot, config.prod.assetsSubDirectory)
 const viewsPath = path.join(config.prod.assetsRoot, config.prod.viewsSubDirectory)
 
-shell.rm('-rf', assetsPath)
-shell.rm('-rf', viewsPath)
+shell.rm('-rf', config.prod.assetsRoot)
 shell.mkdir('-p', assetsPath)
 shell.mkdir('-p', viewsPath)
 // shell.cp('-R', 'static/', assetsPath)
@@ -25,7 +24,7 @@ webpack(webpackConfig, (err, stats) => {
   if (err) throw err
   process.stdout.write(stats.toString({
     colors: true,
-    modules: false,
+    modules: true,
     children: false,
     chunks: false,
     chunkModules: false

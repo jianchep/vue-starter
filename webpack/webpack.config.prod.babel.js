@@ -2,6 +2,7 @@ import path from 'path'
 import webpack from 'webpack'
 import merge from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CompressionWebpackPlugin from 'compression-webpack-plugin'
 
 import * as utils from './utils'
 import config from '../config'
@@ -31,12 +32,16 @@ let prodConfig = merge(baseWebpackConfig, {
       output: {
         comments: false
       }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: utils.assetsPath('js/vendor-[chunkhash:8].js'),
+      minChunks: 3
     })
   ]
 })
 
 const chunks = Object.keys(prodConfig.entry)
-
 chunks.forEach((pathname) => {
   if (pathname === 'vendor') {
     return
@@ -58,5 +63,21 @@ chunks.forEach((pathname) => {
   }
   prodConfig.plugins.push(new HtmlWebpackPlugin(conf))
 })
+
+if (config.prod.productionGzip) {
+  prodConfig.plugins.push(
+    new CompressionWebpackPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: new RegExp(
+        '\\.(' +
+        config.prod.productionGzipExtensions.join('|') +
+        ')$'
+      ),
+      threshold: 10240,
+      minRatio: 0.8
+    })
+  )
+}
 
 export default prodConfig
