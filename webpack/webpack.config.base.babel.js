@@ -1,6 +1,7 @@
 import path from 'path'
 import glob from 'glob'
 import webpack from 'webpack'
+import cssnext from 'postcss-cssnext'
 
 import config from '../config'
 import * as utils from './utils'
@@ -88,6 +89,10 @@ export default {
     })
   ],
   vue: {
-    loaders: utils.cssLoaders()
+    postcss: [
+      cssnext({
+        browsers: ['last 2 Chrome versions', 'last 3 iOS versions']
+      })
+    ]
   }
 }
