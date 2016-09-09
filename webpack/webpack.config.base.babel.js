@@ -78,17 +78,8 @@ export default {
       }
     ]
   },
-  plugins: [
-    new webpack.ProvidePlugin({
-      vue: 'vue'
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'js/vendor.js',
-      minChunks: 3
-    })
-  ],
   vue: {
+    loaders: utils.cssLoaders(),
     postcss: [
       cssnext({
         browsers: ['last 2 Chrome versions', 'last 3 iOS versions']

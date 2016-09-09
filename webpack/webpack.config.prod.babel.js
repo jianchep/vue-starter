@@ -3,6 +3,7 @@ import webpack from 'webpack'
 import merge from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CompressionWebpackPlugin from 'compression-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 import * as utils from './utils'
 import config from '../config'
@@ -13,11 +14,20 @@ const env = process.env.NODE_ENV === 'testing'
   : config.prod.env
 
 let prodConfig = merge(baseWebpackConfig, {
+  module: {
+    loaders: utils.styleLoaders({ sourceMap: config.prod.productionSourceMap, extract: true })
+  },
   devtool: config.prod.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.prod.assetsRoot,
     filename: utils.assetsPath('js/[name]-[chunkhash:8].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    chunkFilename: utils.assetsPath('js/[id]-[chunkhash:8].js')
+  },
+  vue: {
+    loaders: utils.cssLoaders({
+      sourceMap: config.prod.productionSourceMap,
+      extract: true
+    })
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -33,10 +43,24 @@ let prodConfig = merge(baseWebpackConfig, {
         comments: false
       }
     }),
+    new ExtractTextPlugin(utils.assetsPath('css/[name]-[contenthash:8].css')),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       filename: utils.assetsPath('js/vendor-[chunkhash:8].js'),
-      minChunks: 3
+      minChunks: (module, count) => {
+        // any required modules inside node_modules are extracted to vendor
+        return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, '../node_modules')
+          ) === 0
+        )
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      chunks: ['vendor']
     })
   ]
 })
@@ -56,10 +80,6 @@ chunks.forEach((pathname) => {
       removeAttributeQuotes: true
     },
     chunksSortMode: 'dependency'
-  }
-  if (pathname in prodConfig.entry) {
-    conf.chunks = ['vendor', pathname]
-    conf.hash = false
   }
   prodConfig.plugins.push(new HtmlWebpackPlugin(conf))
 })

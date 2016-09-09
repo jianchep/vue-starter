@@ -1,8 +1,10 @@
 import webpack from 'webpack'
 import merge from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 import config from '../config'
+import * as utils from './utils'
 import baseWebpackConfig from './webpack.config.base.babel'
 
 Object.keys(baseWebpackConfig.entry).forEach((name) => {
@@ -13,6 +15,9 @@ Object.keys(baseWebpackConfig.entry).forEach((name) => {
 })
 
 let devConfig = merge(baseWebpackConfig, {
+  module: {
+    loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+  },
   devtool: '#eval-source-map',
   plugins: [
     new webpack.DefinePlugin({
